@@ -1,0 +1,15 @@
+
+
+  
+.reference:hover {
+    border-bottom: 1px solid blue;
+    color: red;
+}
+
+@media (prefers-color-scheme: dark) {
+    .reference {
+      color: #f6f6f6;
+      background-color: #2f2f2f;
+    }
+}
+  
