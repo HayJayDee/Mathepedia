@@ -6,7 +6,6 @@ mod models;
 
 use std::env;
 
-use diesel::{Connection, PgConnection};
 use dotenvy::dotenv;
 
 const DATA: &str = "When <math><mi>a</mi><mo>&#x2260;</mo><mn>0</mn></math>, \
