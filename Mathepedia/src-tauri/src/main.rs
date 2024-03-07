@@ -1,6 +1,14 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod schema;
+mod models;
+
+use std::env;
+
+use diesel::{Connection, PgConnection};
+use dotenvy::dotenv;
+
 const DATA: &str = "When <math><mi>a</mi><mo>&#x2260;</mo><mn>0</mn></math>, \
 there are two solutions to <math>\
 <mi>a</mi><msup><mi>x</mi><mn>2</mn></msup>\
@@ -29,6 +37,13 @@ there are two solutions to <math>\
 
 const DATA1: &str = "Test";
 
+fn establish_connection() -> PgConnection {
+    dotenv().ok();
+
+    let database_url = env::var("DATABASE_URL").expect("Could not found database_url");
+    PgConnection::establish(&database_url).unwrap_or_else( |err| panic!("Error connecting to {}", err))
+}
+
 #[tauri::command]
 fn get_reference_data(id: i32) -> String {
     println!("{}", id);
@@ -40,6 +55,9 @@ fn get_reference_data(id: i32) -> String {
 }
 
 fn main() {
+
+    establish_connection();
+
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![get_reference_data])
         .run(tauri::generate_context!())
